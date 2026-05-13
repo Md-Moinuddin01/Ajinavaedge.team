@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ajinava Edge — Team ILM Tech | AI Content Strategy Hub</title>
+  <meta name="description" content="Ajinava Edge by Team ILM Tech — Your daily AI, Web3 & Tech content strategy hub." />
+  <meta property="og:title" content="Ajinava Edge — Team ILM Tech" />
+  <meta property="og:description" content="Daily AI content briefs, Web3 trends, Tech jobs — sab kuch ek jagah." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.teamilmtech.site" />
+  <meta property="og:image" content="/assets/logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ajinava Edge — Team ILM Tech" />
+  <meta name="twitter:image" content="/assets/logo.png" />
+  <link rel="icon" type="image/png" href="/assets/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="/src/css/variables.css" />
+  <link rel="stylesheet" href="/src/css/base.css" />
+  <link rel="stylesheet" href="/src/css/components.css" />
+  <link rel="stylesheet" href="/src/css/layout.css" />
+  <link rel="stylesheet" href="/src/css/themes.css" />
+</head>
+<body>
+  <!-- CUSTOM CURSOR -->
+  <div id="custom-cursor" class="custom-cursor"></div>
+  <div id="cursor-trail" class="cursor-trail"></div>
+
+  <!-- SPLASH / LOADING SCREEN -->
+  <div id="splash-screen" class="splash-screen">
+    <div class="splash-content">
+      <img src="/assets/logo.png" alt="Ajinava Edge" class="splash-logo" />
+      <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+      <p class="splash-text">Loading Ajinava Edge...</p>
+    </div>
+  </div>
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="login-screen" style="display:none;">
+    <div class="login-container">
+      <div class="login-logo-wrap">
+        <img src="/assets/logo.png" alt="Ajinava Edge" class="login-logo" />
+        <h1 class="login-title">Ajinava Edge</h1>
+        <p class="login-subtitle">Team ILM Tech — Content Strategy Hub</p>
+      </div>
+      <form id="login-form" class="login-form" autocomplete="off">
+        <div class="input-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="Enter your team email" required />
+        </div>
+        <div class="input-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Enter password" required />
+        </div>
+        <p id="login-error" class="login-error" hidden>Invalid credentials.</p>
+        <button type="submit" class="btn btn-primary btn-login" id="login-btn">Login to Dashboard</button>
+      </form>
+      <p class="login-footer">Only authorized Ajinava Edge team members can access this dashboard.</p>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="app" class="app" hidden>
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- PDF Modal -->
+    <div id="pdf-modal" class="modal" hidden>
+      <div class="modal-overlay"></div>
+      <div class="modal-content glass-card">
+        <h2>Export Daily Brief as PDF</h2>
+        <form id="pdf-form">
+          <div class="input-group"><label for="pdf-filename">Filename</label><input type="text" id="pdf-filename" value="AjinavaEdge_DailyBrief" /></div>
+          <div class="input-group"><label for="pdf-pagesize">Page Size</label><select id="pdf-pagesize"><option value="a4">A4</option><option value="letter">Letter</option><option value="legal">Legal</option></select></div>
+          <div class="input-group"><label>Sections to Include</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="pdf-section" value="trending" checked /> Trending Today</label>
+              <label><input type="checkbox" name="pdf-section" value="reel1" checked /> Reel 1</label>
+              <label><input type="checkbox" name="pdf-section" value="reel2" checked /> Reel 2</label>
+              <label><input type="checkbox" name="pdf-section" value="youtube" checked /> YouTube Idea</label>
+              <label><input type="checkbox" name="pdf-section" value="newsletter" checked /> Newsletter</label>
+              <label><input type="checkbox" name="pdf-section" value="quickwins" checked /> Quick Wins</label>
+            </div>
+          </div>
+          <div class="modal-actions"><button type="button" class="btn btn-secondary" id="pdf-cancel">Cancel</button><button type="submit" class="btn btn-primary">Download PDF</button></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Web3 Alert Modal -->
+    <div id="web3-alert-modal" class="modal" hidden>
+      <div class="modal-overlay"></div>
+      <div class="modal-content glass-card">
+        <h2>Web3 Alert Settings</h2>
+        <form id="web3-alert-form">
+          <div class="input-group"><label><input type="checkbox" id="alert-btc" checked /> BTC Price Alerts</label></div>
+          <div class="input-group"><label><input type="checkbox" id="alert-eth" checked /> ETH Price Alerts</label></div>
+          <div class="input-group"><label><input type="checkbox" id="alert-policy" checked /> India Policy Alerts</label></div>
+          <div class="input-group"><label for="alert-threshold">Sensitivity (% change)</label><input type="number" id="alert-threshold" value="5" min="1" max="50" /></div>
+          <div class="modal-actions"><button type="button" class="btn btn-secondary" id="alert-cancel">Cancel</button><button type="submit" class="btn btn-primary">Save Settings</button></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="modal" hidden>
+      <div class="modal-overlay" id="profile-modal-overlay"></div>
+      <div class="modal-content glass-card">
+        <h2>My Profile</h2>
+        <div class="profile-edit">
+          <div class="profile-avatar-edit">
+            <div class="profile-avatar-preview" id="profile-avatar-preview">
+              <span id="profile-avatar-letter">M</span>
+            </div>
+            <label class="btn btn-secondary btn-sm" for="profile-image-input">Upload Photo</label>
+            <input type="file" id="profile-image-input" accept="image/*" hidden />
+          </div>
+          <div class="input-group"><label for="profile-name-input">Display Name</label><input type="text" id="profile-name-input" placeholder="Your name" /></div>
+          <div class="input-group"><label>Email</label><p id="profile-email-display" style="padding:0.5rem 0;font-size:0.875rem;color:var(--text-secondary);">—</p></div>
+          <div class="input-group"><label>Role</label><p id="profile-role-display" style="padding:0.5rem 0;font-size:0.875rem;color:var(--text-secondary);">—</p></div>
+          <div class="modal-actions"><button type="button" class="btn btn-secondary" id="profile-cancel">Cancel</button><button type="button" class="btn btn-primary" id="profile-save">Save Profile</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <img src="/assets/logo.png" alt="Ajinava Edge" class="sidebar-logo" />
+        <div class="sidebar-brand"><h2>Ajinava Edge</h2><span class="sidebar-tagline">Team ILM Tech</span></div>
+        <button id="sidebar-toggle" class="sidebar-toggle">&#9776;</button>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-page="dashboard" id="nav-dashboard"><span class="nav-icon">&#127968;</span><span class="nav-text">Dashboard</span></a>
+        <a href="#" class="nav-item" data-page="daily-brief" id="nav-daily-brief"><span class="nav-icon">&#128203;</span><span class="nav-text">Daily Brief</span></a>
+        <a href="#" class="nav-item" data-page="web3" id="nav-web3"><span class="nav-icon">&#127760;</span><span class="nav-text">Web3 News</span></a>
+        <a href="#" class="nav-item" data-page="jobs" id="nav-jobs"><span class="nav-icon">&#128188;</span><span class="nav-text">Tech Jobs</span></a>
+        <a href="#" class="nav-item" data-page="attendance" id="nav-attendance"><span class="nav-icon">&#128197;</span><span class="nav-text">Attendance</span></a>
+        <a href="#" class="nav-item" data-page="team" id="nav-team"><span class="nav-icon">&#128101;</span><span class="nav-text">Team Hub</span></a>
+        <a href="#" class="nav-item" data-page="history" id="nav-history"><span class="nav-icon">&#128218;</span><span class="nav-text">History</span></a>
+        <a href="#" class="nav-item" data-page="profile" id="nav-profile"><span class="nav-icon">&#128100;</span><span class="nav-text">My Profile</span></a>
+        <a href="#" class="nav-item admin-only-hidden" data-page="admin" id="nav-admin"><span class="nav-icon">&#9881;</span><span class="nav-text">Admin Panel</span></a>
+      </nav>
+      <div class="sidebar-social">
+        <a href="https://www.instagram.com/ajinava.edge.official" target="_blank" title="Instagram" class="social-link">&#128247;</a>
+        <a href="https://www.youtube.com/@ajinavaedge" target="_blank" title="YouTube" class="social-link">&#9654;&#65039;</a>
+        <a href="https://linkedin.com/company/ajinava-edge-in" target="_blank" title="LinkedIn" class="social-link">in</a>
+        <a href="https://x.com/Ajinavaedge?s=09" target="_blank" title="X" class="social-link">X</a>
+        <a href="https://www.teamilmtech.site" target="_blank" title="Website" class="social-link">&#127760;</a>
+      </div>
+      <div class="sidebar-footer">
+        <div class="user-info" id="user-info" style="cursor:pointer;" title="Edit Profile">
+          <div class="user-avatar" id="user-avatar">M</div>
+          <div class="user-details"><span class="user-name" id="user-name">User</span><span class="user-role" id="user-role">Team</span></div>
+        </div>
+        <button class="btn btn-logout" id="logout-btn">Logout</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main id="main-content" class="main-content">
+      <header class="top-header">
+        <div class="header-left">
+          <button id="mobile-menu-btn" class="mobile-menu-btn">&#9776;</button>
+          <div class="header-brief-badge"><span class="pulse-dot"></span><span>9:00 AM IST Daily Brief</span></div>
+          <div class="header-brand-badge">Beyond Ajinava Edge</div>
+        </div>
+        <div class="header-right">
+          <button class="theme-toggle" id="theme-toggle" title="Toggle Dark/Light"><span class="theme-icon" id="theme-icon">&#127769;</span></button>
+          <button class="btn btn-sm btn-notification" id="notification-btn" title="Notifications">&#128276; <span class="notif-badge" id="notif-badge" hidden>0</span></button>
+        </div>
+      </header>
+
+      <!-- DASHBOARD -->
+      <section id="page-dashboard" class="page active">
+        <div class="page-header"><h1 class="page-title">Ajinava Edge Dashboard</h1><p class="page-subtitle">Yaar, aaj ka poora scene ek nazar mein dekho — AI, Web3, Jobs sab kuch!</p></div>
+        <div class="stats-grid">
+          <div class="stat-card glass-card"><div class="stat-icon">&#128203;</div><div class="stat-info"><span class="stat-number" id="stat-briefs-num">0</span><span class="stat-label">Briefs Generated</span></div></div>
+          <div class="stat-card glass-card"><div class="stat-icon">&#8383;</div><div class="stat-info"><span class="stat-number" id="stat-btc-price">Loading...</span><span class="stat-label">BTC Price</span></div></div>
+          <div class="stat-card glass-card"><div class="stat-icon">&#926;</div><div class="stat-info"><span class="stat-number" id="stat-eth-price">Loading...</span><span class="stat-label">ETH Price</span></div></div>
+          <div class="stat-card glass-card"><div class="stat-icon">&#128188;</div><div class="stat-info"><span class="stat-number" id="stat-jobs-num">0</span><span class="stat-label">Job Updates</span></div></div>
+        </div>
+        <div class="quick-actions">
+          <button class="action-card glass-card" id="action-generate-brief"><span class="action-icon">&#9889;</span><span class="action-text">Generate Today's Brief</span></button>
+          <button class="action-card glass-card" id="action-export-pdf"><span class="action-icon">&#128196;</span><span class="action-text">Export PDF</span></button>
+          <button class="action-card glass-card" id="action-web3-alerts"><span class="action-icon">&#128276;</span><span class="action-text">Web3 Alerts</span></button>
+          <button class="action-card glass-card" id="action-view-history"><span class="action-icon">&#128218;</span><span class="action-text">View History</span></button>
+        </div>
+        <div class="dashboard-grid">
+          <div class="dash-card glass-card"><h3>Aaj Ka Top Trending</h3><div id="dash-trending" class="dash-content"><p class="placeholder-text">Brief generate karo, phir yahan trending topics dikhenge!</p></div></div>
+          <div class="dash-card glass-card"><h3>Web3 Quick View</h3><div id="dash-web3" class="dash-content"><canvas id="dash-mini-chart" height="150"></canvas></div></div>
+          <div class="dash-card glass-card"><h3>Latest Job Updates</h3><div id="dash-jobs" class="dash-content"><p class="placeholder-text">Tech companies ke latest updates yahan dikhenge!</p></div></div>
+          <div class="dash-card glass-card"><h3>Social Media</h3>
+            <div class="social-grid">
+              <a href="https://www.instagram.com/ajinava.edge.official" target="_blank" class="social-card instagram">Instagram</a>
+              <a href="https://www.youtube.com/@ajinavaedge" target="_blank" class="social-card youtube">YouTube</a>
+              <a href="https://linkedin.com/company/ajinava-edge-in" target="_blank" class="social-card linkedin">LinkedIn</a>
+              <a href="https://x.com/Ajinavaedge?s=09" target="_blank" class="social-card twitter">X / Twitter</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DAILY BRIEF -->
+      <section id="page-daily-brief" class="page" hidden>
+        <div class="page-header">
+          <div class="page-header-row">
+            <div><h1 class="page-title">Daily Content Brief</h1><p class="page-subtitle">Beyond Ajinava Edge — 9:00 AM IST Auto Brief</p></div>
+            <div class="page-actions"><button class="btn btn-primary" id="generate-brief-btn">Generate Brief</button><button class="btn btn-secondary" id="export-brief-btn">Export PDF</button></div>
+          </div>
+          <div class="brief-meta glass-card" id="brief-meta"><span id="brief-date">Date: —</span><span id="brief-time">Generated: —</span><span class="brief-status" id="brief-status">Waiting...</span></div>
+        </div>
+        <div id="brief-content" class="brief-content">
+          <div class="brief-placeholder glass-card"><div class="brief-placeholder-icon">&#128203;</div><h2>Yaar, abhi brief generate nahi hua!</h2><p>Click "Generate Brief" ya wait karo 9:00 AM IST tak!</p><button class="btn btn-primary" id="generate-brief-placeholder-btn">Abhi Generate Karo</button></div>
+        </div>
+      </section>
+
+      <!-- WEB3 -->
+      <section id="page-web3" class="page" hidden>
+        <div class="page-header">
+          <div class="page-header-row">
+            <div><h1 class="page-title">Web3 News & Trends</h1><p class="page-subtitle">BTC, ETH, India Policy — Sab kuch real-time dekho bhai!</p></div>
+            <div class="page-actions"><button class="btn btn-secondary" id="web3-alert-settings-btn">Alert Settings</button></div>
+          </div>
+        </div>
+        <div class="crypto-cards">
+          <div class="crypto-card glass-card" id="btc-card"><div class="crypto-header"><span class="crypto-name">Bitcoin (BTC)</span><span class="crypto-trend" id="btc-trend">—</span></div><div class="crypto-price" id="btc-price">$—</div><div class="crypto-change" id="btc-change">—</div><canvas id="btc-chart" height="200"></canvas></div>
+          <div class="crypto-card glass-card" id="eth-card"><div class="crypto-header"><span class="crypto-name">Ethereum (ETH)</span><span class="crypto-trend" id="eth-trend">—</span></div><div class="crypto-price" id="eth-price">$—</div><div class="crypto-change" id="eth-change">—</div><canvas id="eth-chart" height="200"></canvas></div>
+        </div>
+        <div class="web3-section glass-card"><h3>India Crypto Policy Updates</h3><div id="india-policy-news" class="news-list"><div class="loading-spinner">Loading...</div></div></div>
+        <div class="web3-section glass-card"><h3>Global Web3 News</h3><div id="web3-news-feed" class="news-list"><div class="loading-spinner">Loading...</div></div></div>
+      </section>
+
+      <!-- JOBS -->
+      <section id="page-jobs" class="page" hidden>
+        <div class="page-header"><h1 class="page-title">Tech Jobs & Layoff Tracker</h1><p class="page-subtitle">Google, Amazon, Infosys, TCS — Sab ka update ek jagah!</p></div>
+        <div class="jobs-filters glass-card">
+          <div class="filter-row">
+            <div class="input-group"><label for="job-search">Search</label><input type="text" id="job-search" placeholder="Search jobs, companies..." /></div>
+            <div class="input-group"><label for="job-company-filter">Company</label><select id="job-company-filter"><option value="all">All</option><option value="google">Google</option><option value="amazon">Amazon</option><option value="infosys">Infosys</option><option value="tcs">TCS</option><option value="wipro">Wipro</option><option value="deloitte">Deloitte</option><option value="microsoft">Microsoft</option><option value="meta">Meta</option><option value="apple">Apple</option></select></div>
+            <div class="input-group"><label for="job-type-filter">Type</label><select id="job-type-filter"><option value="all">All</option><option value="hiring">Hiring</option><option value="layoff">Layoff</option><option value="expansion">Expansion</option><option value="news">News</option></select></div>
+            <div class="input-group"><label for="job-date-filter">Date</label><select id="job-date-filter"><option value="all">All</option><option value="today">Today</option><option value="week">This Week</option><option value="month">This Month</option></select></div>
+          </div>
+          <div class="filter-row"><button class="btn btn-sm btn-secondary" id="show-saved-jobs">Saved Jobs (<span id="saved-jobs-count">0</span>)</button><button class="btn btn-sm btn-secondary" id="clear-filters">Clear Filters</button></div>
+        </div>
+        <div id="jobs-list" class="jobs-list"><div class="loading-spinner">Loading job updates...</div></div>
+        <div id="saved-jobs-panel" class="saved-jobs-panel glass-card" hidden><div class="saved-jobs-header"><h3>Saved Jobs</h3><button class="btn btn-sm" id="close-saved-panel">&#10005;</button></div><div id="saved-jobs-list" class="saved-jobs-list"><p class="placeholder-text">Koi saved job nahi hai abhi.</p></div></div>
+      </section>
+
+      <!-- TEAM -->
+      <section id="page-team" class="page" hidden>
+        <div class="page-header"><h1 class="page-title">Team ILM Tech Hub</h1><p class="page-subtitle">Team ke saath milke AI ka future banao!</p></div>
+        <div class="team-grid" id="team-grid"><!-- Rendered by JS --></div>
+        <div class="team-search-section glass-card">
+          <h3>Role-Based AI Search</h3>
+          <p class="search-desc">Apna role select karo, topic likho — global news search karke action steps milenge!</p>
+          <div class="search-form">
+            <div class="search-row">
+              <div class="input-group"><label for="team-role-select">Your Role</label><select id="team-role-select"><option value="content-creator">Content Creator</option><option value="developer">Developer</option><option value="marketer">Marketer</option><option value="student">Student</option><option value="freelancer">Freelancer</option><option value="business-owner">Business Owner</option></select></div>
+              <div class="input-group"><label for="team-topic-filter">Topic</label><select id="team-topic-filter"><option value="all">All</option><option value="ai">AI & ML</option><option value="web3">Web3</option><option value="tech">Tech</option><option value="business">Business</option><option value="career">Career</option></select></div>
+              <div class="input-group"><label for="team-date-filter">Date</label><select id="team-date-filter"><option value="today">Today</option><option value="week">This Week</option><option value="month">This Month</option></select></div>
+            </div>
+            <div class="input-group search-input-wrap"><input type="text" id="team-search-input" placeholder="Kya dhundhna hai? e.g. AI tools for freelancers..." /><button class="btn btn-primary" id="team-search-btn">Search</button></div>
+          </div>
+          <div id="team-search-results" class="team-search-results" hidden><div class="loading-spinner" id="team-search-loading" hidden>Analyzing global news...</div></div>
+        </div>
+      </section>
+
+      <!-- HISTORY -->
+      <section id="page-history" class="page" hidden>
+        <div class="page-header">
+          <div class="page-header-row">
+            <div><h1 class="page-title">Brief History</h1><p class="page-subtitle">Purane sab briefs aur updates yahan save hain!</p></div>
+            <div class="page-actions"><div class="input-group"><input type="date" id="history-date-filter" /></div><button class="btn btn-secondary" id="history-search-btn">Search</button></div>
+          </div>
+        </div>
+        <div id="history-list" class="history-list"><div class="brief-placeholder glass-card"><div class="brief-placeholder-icon">&#128218;</div><h2>Abhi koi history nahi hai</h2><p>Jab brief generate hoga, yahan save ho jayega automatically!</p></div></div>
+      </section>
+
+      <!-- ATTENDANCE PAGE -->
+      <section id="page-attendance" class="page" hidden>
+        <div class="page-header">
+          <div class="page-header-row">
+            <div><h1 class="page-title">Attendance Tracker</h1><p class="page-subtitle">Daily attendance — mark present and track history!</p></div>
+            <div class="page-actions">
+              <button class="btn btn-primary" id="attendance-checkin-btn">Mark Present</button>
+              <span id="attendance-checkin-status"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date navigation -->
+        <div class="att-date-nav glass-card">
+          <button class="btn btn-sm" id="attendance-prev-day">&larr;</button>
+          <input type="date" id="attendance-date" />
+          <button class="btn btn-sm" id="attendance-next-day">&rarr;</button>
+          <button class="btn btn-sm btn-secondary" id="attendance-today-btn">Today</button>
+        </div>
+
+        <!-- Day stats -->
+        <div class="att-stats-bar" id="attendance-day-stats"></div>
+
+        <!-- Daily table -->
+        <div class="att-table-wrap glass-card">
+          <table class="att-table">
+            <thead><tr><th>#</th><th>Name</th><th>Role</th><th>Status</th><th>Time</th><th>Action</th></tr></thead>
+            <tbody id="attendance-table-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Month sheet -->
+        <div class="att-month-section">
+          <div class="att-month-header">
+            <h3>Monthly Attendance Sheet</h3>
+            <input type="month" id="attendance-month-select" />
+          </div>
+          <div id="attendance-month-sheet" class="att-month-sheet"></div>
+        </div>
+      </section>
+
+      <!-- ADMIN PANEL -->
+      <section id="page-admin" class="page" hidden>
+        <div class="page-header">
+          <div class="page-header-row">
+            <div><h1 class="page-title">Admin Panel</h1><p class="page-subtitle">Team management — access every member's data and attendance!</p></div>
+          </div>
+        </div>
+
+        <!-- Admin overview -->
+        <div class="admin-overview">
+          <div class="stat-card glass-card"><div class="stat-icon">&#128101;</div><div class="stat-info"><span class="stat-number" id="admin-total-members">0</span><span class="stat-label">Total Members</span></div></div>
+          <div class="stat-card glass-card"><div class="stat-icon" style="color:var(--success)">&#10003;</div><div class="stat-info"><span class="stat-number" id="admin-present-today">0</span><span class="stat-label">Present Today</span></div></div>
+          <div class="stat-card glass-card"><div class="stat-icon" style="color:var(--danger)">&#10007;</div><div class="stat-info"><span class="stat-number" id="admin-absent-today">0</span><span class="stat-label">Absent Today</span></div></div>
+          <div class="stat-card glass-card"><div class="stat-icon" style="color:var(--accent)">%</div><div class="stat-info"><span class="stat-number" id="admin-att-rate">0%</span><span class="stat-label">Attendance Rate</span></div></div>
+        </div>
+
+        <!-- Search -->
+        <div class="admin-search-bar glass-card">
+          <div class="input-group"><input type="text" id="admin-search" placeholder="Search members by name, email, role..." /></div>
+        </div>
+
+        <!-- Members list -->
+        <div class="admin-members" id="admin-members-list"></div>
+
+        <!-- Member detail panel -->
+        <div class="admin-detail-panel glass-card" id="admin-member-detail" hidden>
+          <div class="admin-detail-header">
+            <h3>Member Details</h3>
+            <button class="btn btn-sm" id="admin-detail-close">&#10005;</button>
+          </div>
+          <div id="detail-member-content"></div>
+        </div>
+      </section>
+
+      <!-- PROFILE PAGE -->
+      <section id="page-profile" class="page" hidden>
+        <div class="page-header"><h1 class="page-title">My Profile</h1><p class="page-subtitle">Apni profile edit karo — photo aur naam change karo!</p></div>
+        <div class="profile-page-card glass-card">
+          <div class="profile-page-avatar" id="profile-page-avatar"><span id="profile-page-letter">M</span></div>
+          <label class="btn btn-secondary" for="profile-page-image-input" style="margin-bottom:1rem;">Upload Photo</label>
+          <input type="file" id="profile-page-image-input" accept="image/*" hidden />
+          <div class="input-group" style="margin-bottom:1rem;max-width:400px;width:100%;"><label for="profile-page-name">Display Name</label><input type="text" id="profile-page-name" placeholder="Your name" /></div>
+          <p id="profile-page-email" style="font-size:0.875rem;color:var(--text-tertiary);margin-bottom:0.5rem;">—</p>
+          <p id="profile-page-role" style="font-size:0.875rem;color:var(--text-tertiary);margin-bottom:1rem;">—</p>
+          <button class="btn btn-primary" id="profile-page-save">Save Profile</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>

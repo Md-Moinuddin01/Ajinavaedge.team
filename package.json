@@ -1,0 +1,18 @@
+{
+  "name": "ajinava-edge-daily-time",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^8.0.12"
+  },
+  "dependencies": {
+    "chart.js": "^4.5.1",
+    "html2pdf.js": "^0.14.0"
+  }
+}
