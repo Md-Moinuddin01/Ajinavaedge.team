@@ -26,13 +26,6 @@ Ajinava Edge aims to empower young creators and developers by giving them opport
 - Automation Systems
 - Digital Products
 
-## 🤝 Join The Community
-Become a part of Ajinava Edge and help shape the future of innovation.
-
 📩 Connect With Us  
-- LinkedIn: Add your link here  
-- Instagram: Add your link here  
-- Website: Add your website here  
-
 ---
 ### "Building the future through technology, creativity, and collaboration."
