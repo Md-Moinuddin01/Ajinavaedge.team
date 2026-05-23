@@ -7,9 +7,6 @@ Ajinava Edge is a next-generation tech community and innovation-driven platform 
 
 We are creating a space where students, developers, creators, designers, and innovators can connect, learn, build, and grow together.
 
-## 🚀 Vision
-To build a powerful global community that transforms ideas into real-world innovation through technology and collaboration.
-
 ## 💡 What We Do
 - AI & Cloud Technology Projects
 - Startup & Innovation Development
